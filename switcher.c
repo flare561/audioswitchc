@@ -47,6 +47,8 @@ int main()
             case unplugged_active:
                 switchDevice(SPEAKERS);
                 break;
+            default:
+                break;
         }
         sleep(1);
     }
