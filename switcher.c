@@ -33,13 +33,13 @@ int switchDevice(const char device[])
 
 int main()
 {
-	FILE *fp = fopen(OUTPUT_FILE, "rb");
-	char readchar[] = "0\0";
-	enum state value;
+    FILE *fp = fopen(OUTPUT_FILE, "rb");
+    char readchar[] = "0\0";
+    enum state value;
 
-	while (1) 
-	{
-		value = getState(fp, readchar);
+    while (1) 
+    {
+        value = getState(fp, readchar);
         switch (value) {
             case plugged_inactive:
                 switchDevice(HEADPHONES);
@@ -48,6 +48,6 @@ int main()
                 switchDevice(SPEAKERS);
                 break;
         }
-		sleep(1);
-	}
+        sleep(1);
+    }
 }
