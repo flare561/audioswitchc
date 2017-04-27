@@ -22,14 +22,9 @@ enum state {
 // buff is supplied to avoid allocating memory
 // buff should be a char array with length 2
 // and ending in a \0
-// Can you return an enum? If we're not making
-// the state values macros, we should return
-// it as an enum.
-
-int getState(FILE *fp, char *buff)
+enum state getState(FILE *fp, char *buff)
 {
-    // If we don't rewind the byte we read is
-    // buffered maybe try setbuff(fp, NULL)?
+    // If we don't rewind the byte we read is buffered.
     rewind(fp);
     // Get a single char at STATE_LOCATION
     fseek(fp, STATE_LOCATION, SEEK_SET);
@@ -41,7 +36,7 @@ int getState(FILE *fp, char *buff)
     // significant bit indicating whether the front
     // panel is active (0 for active, 1 for inactive)
     // the other bits are irrelevant so we get rid of them
-    return (int)strtol(buff, NULL, 16) & 0x9;
+    return (enum state)strtol(buff, NULL, 16) & 0x9;
 }
 
 // Should device be const char* device?
