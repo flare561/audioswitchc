@@ -5,10 +5,9 @@
 // These should maybe be macros?
 const char OUTPUT_FILE[] = "/proc/asound/DG/oxygen";
 const int STATE_LOCATION = 551;
-const char COMMAND[] = "amixer set %s %s";
+const char COMMAND[] = "amixer -c 1 set 'Analog Output' %s";
 const char HEADPHONES[] = "'Stereo Headphones FP'";
 const char SPEAKERS[] = "'Stereo Headphones'";
-const char OUTPUT[] = "'Analog Output'";
 
 // Maybe this should be too
 // Could also try a bitfield?
@@ -47,7 +46,7 @@ int switchDevice(const char device[])
     // Is it worth trying to change the device
     // directly rather than using an external program?
     char buff[100];
-    sprintf(buff, COMMAND, OUTPUT, device);
+    sprintf(buff, COMMAND, device);
     return system(buff);
 }
 
