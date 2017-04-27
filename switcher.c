@@ -10,7 +10,8 @@ const char HEADPHONES[] = "'Stereo Headphones FP'";
 const char SPEAKERS[] = "'Stereo Headphones'";
 const char OUTPUT[] = "'Analog Output'";
 
-// This maybe should be too
+// Maybe this should be too
+// Could also try a bitfield?
 typedef enum state {
     plugged_active = 0,
     unplugged_active = 1,
