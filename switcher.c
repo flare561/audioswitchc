@@ -2,15 +2,16 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-// These should maybe be macros?
-const char OUTPUT_FILE[] = "/proc/asound/DG/oxygen";
-const int STATE_LOCATION = 551;
-const char COMMAND[] = "amixer -c 1 set 'Analog Output' %s";
-const char HEADPHONES[] = "'Stereo Headphones FP'";
-const char SPEAKERS[] = "'Stereo Headphones'";
+// Change these to make it work with other soundcards (maybe)
+// They'll be moved to a config file soon (hopefully)
+#define OUTPUT_FILE "/proc/asound/DG/oxygen"
+#define STATE_LOCATION 551
+#define COMMAND "amixer -c 1 set 'Analog Output' %s"
+#define HEADPHONES "'Stereo Headphones FP'"
+#define SPEAKERS "'Stereo Headphones'"
 
-// Maybe this should be too
-// Could also try a bitfield?
+// This might have to be changed too
+// This should maybe be a bitfield or possibly just macros
 typedef enum state {
     plugged_active = 0,
     unplugged_active = 1,
@@ -36,6 +37,7 @@ State getState(FILE *fp, char *buff)
     // significant bit indicating whether the front
     // panel is active (0 for active, 1 for inactive)
     // the other bits are irrelevant so we get rid of them
+    // Hopefully you don't need to change this one
     return (State)(strtol(buff, NULL, 16) & 0x9);
 }
 
