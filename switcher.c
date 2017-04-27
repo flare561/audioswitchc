@@ -11,18 +11,18 @@ const char SPEAKERS[] = "'Stereo Headphones'";
 const char OUTPUT[] = "'Analog Output'";
 
 // This maybe should be too
-enum state {
+typedef enum state {
     plugged_active = 0,
     unplugged_active = 1,
     plugged_inactive= 8,
     unplugged_inactive = 9,
-};
+} State;
 
 // This is called in a loop every second so
 // buff is supplied to avoid allocating memory
 // buff should be a char array with length 2
 // and ending in a \0
-enum state getState(FILE *fp, char *buff)
+State getState(FILE *fp, char *buff)
 {
     // If we don't rewind the byte we read is buffered.
     rewind(fp);
@@ -36,7 +36,7 @@ enum state getState(FILE *fp, char *buff)
     // significant bit indicating whether the front
     // panel is active (0 for active, 1 for inactive)
     // the other bits are irrelevant so we get rid of them
-    return (enum state)strtol(buff, NULL, 16) & 0x9;
+    return (State)(strtol(buff, NULL, 16) & 0x9);
 }
 
 // Should device be const char* device?
@@ -57,7 +57,7 @@ int main()
     // loop. Is this worth doing?
     FILE *fp = fopen(OUTPUT_FILE, "rb");
     char readchar[] = "0\0";
-    enum state value;
+    State value;
 
     // Maybe I should have TRUE/FALSE macros too?
     while (1)
