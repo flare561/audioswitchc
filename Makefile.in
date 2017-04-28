@@ -152,8 +152,9 @@ am__uninstall_files_from_dir = { \
     || { echo " ( cd '$$dir' && rm -f" $$files ")"; \
          $(am__cd) "$$dir" && rm -f $$files; }; \
   }
-am__installdirs = "$(DESTDIR)$(docdir)"
-DATA = $(dist_doc_DATA)
+am__installdirs = "$(DESTDIR)$(configdir)" "$(DESTDIR)$(docdir)" \
+	"$(DESTDIR)$(systemddir)"
+DATA = $(config_DATA) $(dist_doc_DATA) $(systemd_DATA)
 RECURSIVE_CLEAN_TARGETS = mostlyclean-recursive clean-recursive	\
   distclean-recursive maintainer-clean-recursive
 am__recursive_targets = \
@@ -314,6 +315,12 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 SUBDIRS = src
 dist_doc_DATA = readme.md
+
+# This maybe shouldn't be installed automatically?
+systemddir = /etc/systemd/system
+systemd_DATA = audioswitch.service
+configdir = /etc
+config_DATA = audioswitch.conf
 all: all-recursive
 
 .SUFFIXES:
@@ -350,6 +357,27 @@ $(top_srcdir)/configure:  $(am__configure_deps)
 $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	$(am__cd) $(srcdir) && $(ACLOCAL) $(ACLOCAL_AMFLAGS)
 $(am__aclocal_m4_deps):
+install-configDATA: $(config_DATA)
+	@$(NORMAL_INSTALL)
+	@list='$(config_DATA)'; test -n "$(configdir)" || list=; \
+	if test -n "$$list"; then \
+	  echo " $(MKDIR_P) '$(DESTDIR)$(configdir)'"; \
+	  $(MKDIR_P) "$(DESTDIR)$(configdir)" || exit 1; \
+	fi; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(configdir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(configdir)" || exit $$?; \
+	done
+
+uninstall-configDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(config_DATA)'; test -n "$(configdir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	dir='$(DESTDIR)$(configdir)'; $(am__uninstall_files_from_dir)
 install-dist_docDATA: $(dist_doc_DATA)
 	@$(NORMAL_INSTALL)
 	@list='$(dist_doc_DATA)'; test -n "$(docdir)" || list=; \
@@ -371,6 +399,27 @@ uninstall-dist_docDATA:
 	@list='$(dist_doc_DATA)'; test -n "$(docdir)" || list=; \
 	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
 	dir='$(DESTDIR)$(docdir)'; $(am__uninstall_files_from_dir)
+install-systemdDATA: $(systemd_DATA)
+	@$(NORMAL_INSTALL)
+	@list='$(systemd_DATA)'; test -n "$(systemddir)" || list=; \
+	if test -n "$$list"; then \
+	  echo " $(MKDIR_P) '$(DESTDIR)$(systemddir)'"; \
+	  $(MKDIR_P) "$(DESTDIR)$(systemddir)" || exit 1; \
+	fi; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(systemddir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(systemddir)" || exit $$?; \
+	done
+
+uninstall-systemdDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(systemd_DATA)'; test -n "$(systemddir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	dir='$(DESTDIR)$(systemddir)'; $(am__uninstall_files_from_dir)
 
 # This directory's subdirectories are mostly independent; you can cd
 # into them and run 'make' without going through this Makefile.
@@ -671,7 +720,7 @@ check: check-recursive
 all-am: Makefile $(DATA)
 installdirs: installdirs-recursive
 installdirs-am:
-	for dir in "$(DESTDIR)$(docdir)"; do \
+	for dir in "$(DESTDIR)$(configdir)" "$(DESTDIR)$(docdir)" "$(DESTDIR)$(systemddir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-recursive
@@ -725,7 +774,8 @@ info: info-recursive
 
 info-am:
 
-install-data-am: install-dist_docDATA
+install-data-am: install-configDATA install-dist_docDATA \
+	install-systemdDATA
 
 install-dvi: install-dvi-recursive
 
@@ -771,7 +821,8 @@ ps: ps-recursive
 
 ps-am:
 
-uninstall-am: uninstall-dist_docDATA
+uninstall-am: uninstall-configDATA uninstall-dist_docDATA \
+	uninstall-systemdDATA
 
 .MAKE: $(am__recursive_targets) install-am install-strip
 
@@ -781,22 +832,20 @@ uninstall-am: uninstall-dist_docDATA
 	dist-gzip dist-lzip dist-shar dist-tarZ dist-xz dist-zip \
 	distcheck distclean distclean-generic distclean-tags \
 	distcleancheck distdir distuninstallcheck dvi dvi-am html \
-	html-am info info-am install install-am install-data \
-	install-data-am install-dist_docDATA install-dvi \
+	html-am info info-am install install-am install-configDATA \
+	install-data install-data-am install-dist_docDATA install-dvi \
 	install-dvi-am install-exec install-exec-am install-html \
 	install-html-am install-info install-info-am install-man \
 	install-pdf install-pdf-am install-ps install-ps-am \
-	install-strip installcheck installcheck-am installdirs \
-	installdirs-am maintainer-clean maintainer-clean-generic \
-	mostlyclean mostlyclean-generic pdf pdf-am ps ps-am tags \
-	tags-am uninstall uninstall-am uninstall-dist_docDATA
+	install-strip install-systemdDATA installcheck installcheck-am \
+	installdirs installdirs-am maintainer-clean \
+	maintainer-clean-generic mostlyclean mostlyclean-generic pdf \
+	pdf-am ps ps-am tags tags-am uninstall uninstall-am \
+	uninstall-configDATA uninstall-dist_docDATA \
+	uninstall-systemdDATA
 
 .PRECIOUS: Makefile
 
-
-# This maybe shouldn't be installed automatically?
-# systemddir = /etc/systemd/system
-# systemd_DATA = audioswitch.service
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

@@ -5,3 +5,5 @@ dist_doc_DATA = readme.md
 systemddir = /etc/systemd/system
 systemd_DATA = audioswitch.service
 
+configdir = /etc
+config_DATA = audioswitch.conf

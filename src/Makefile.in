@@ -98,10 +98,10 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_audioswitch_OBJECTS = audioswitch.$(OBJEXT)
+am_audioswitch_OBJECTS = audioswitch.$(OBJEXT) config.$(OBJEXT)
 audioswitch_OBJECTS = $(am_audioswitch_OBJECTS)
 audioswitch_LDADD = $(LDADD)
-am_audioswitchd_OBJECTS = audioswitchd.$(OBJEXT)
+am_audioswitchd_OBJECTS = audioswitchd.$(OBJEXT) config.$(OBJEXT)
 audioswitchd_OBJECTS = $(am_audioswitchd_OBJECTS)
 audioswitchd_LDADD = $(LDADD)
 AM_V_P = $(am__v_P_@AM_V@)
@@ -245,8 +245,8 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-audioswitchd_SOURCES = audioswitchd.c
-audioswitch_SOURCES = audioswitch.c
+audioswitchd_SOURCES = audioswitchd.c config.c
+audioswitch_SOURCES = audioswitch.c config.c
 all: all-am
 
 .SUFFIXES:
@@ -339,6 +339,7 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/audioswitch.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/audioswitchd.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/config.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
