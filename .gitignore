@@ -33,9 +33,10 @@
 /texinfo.tex
 
 # binaries
-/audioswitch
-/.deps/*
+audioswitch
+audioswitchd
 Makefile
+**/.deps/*
 config.log
 config.status
 *.o

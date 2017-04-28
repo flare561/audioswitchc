@@ -2,7 +2,7 @@
 Description=Switches audio on device unplugged
 
 [Service]
-ExecStart=/usr/local/bin/audioswitch
+ExecStart=/usr/local/bin/audioswitchd
 Restart=always
 
 [Install]
