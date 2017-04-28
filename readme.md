@@ -12,6 +12,6 @@ make
 sudo make install
 ```
 
-Then it can be run with `audioswitch`
+Then it can be run with `audioswitchd`
 
 If you want to run it as a service you can copy `audioswitch.service` to `/etc/systemd/system` then run `sudo systemctl start audioswitch.service` to start it, and `sudo systemctl enable audioswitch.service` to start it automatically on boot.
