@@ -9,17 +9,17 @@ typedef enum state {
     unplugged_active = 1,
     plugged_inactive= 8,
     unplugged_inactive = 9,
-} State;
+} State_T;
 
 //Declare global conf
-Config *conf;
+Config_T *conf;
 
 
 // This is called in a loop every second so
 // buff is supplied to avoid allocating memory
 // buff should be a char array with length 2
 // and ending in a \0
-State getState(FILE *fp, char *buff) {
+State_T getState(FILE *fp, char *buff) {
     // If we don't rewind the byte we read is buffered.
     rewind(fp);
 
@@ -34,15 +34,15 @@ State getState(FILE *fp, char *buff) {
     // panel is active (0 for active, 1 for inactive)
     // the other bits are irrelevant so we get rid of them
     // Hopefully you don't need to change this one
-    return (State)(strtol(buff, NULL, 16) & conf->mask);
+    return (State_T)(strtol(buff, NULL, 16) & conf->mask);
 }
 
 int main(int argc, char *argv[]) {
     if (argc > 1) {
         printf("Using config file: %s\n", argv[1]);
-        conf = Get_Config(argv[1]);
+        conf = Get_Config_T(argv[1]);
     } else {
-        conf = Get_Config("/etc/audioswitch.conf");
+        conf = Get_Config_T("/etc/audioswitch.conf");
     }
 
     if (conf == NULL) {
@@ -55,7 +55,7 @@ int main(int argc, char *argv[]) {
     // loop. Is this worth doing?
     FILE *fp = fopen(conf->oxygen_file, "rb");
     char readchar[] = "0\0";
-    State value;
+    State_T value;
     int command_success;
 
     if (fp == NULL) {

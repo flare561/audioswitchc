@@ -5,10 +5,10 @@
 
 int main(void)
 {
-    Config *conf = Get_Config("./audioswitch.conf");
-    printf("%s %s %s %d %d %d",
+    Config_T *conf = Get_Config_T("./audioswitch.conf");
+    printf("%s\n%s\n%s\n%d\n%d\n%d\n",
             conf->headphones, conf->speakers, conf->oxygen_file,
             conf->state_location, conf->state_length, conf->mask);
-    Destroy_Config(conf);
+    Destroy_Config_T(conf);
 }
 
